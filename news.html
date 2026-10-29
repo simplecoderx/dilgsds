@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DILG Surigao del Sur - News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0" nonce="YOUR_NONCE"></script>
+</head>
+<body>
+  <nav class="topnav" aria-label="Primary">
+    <div class="topnav-center">
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-item" data-page="home"><span class="nav-label">Home</span></a></li>
+
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="about" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">About Us</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="About Us submenu">
+            <li><a href="organizational-structure.html" class="dropdown-item">Organizational Structure</a></li>
+            <li><a href="elected-officials.html" class="dropdown-item">Elected Officials</a></li>
+            <li><a href="mission-vision-values.html" class="dropdown-item">Mission, Vision &amp; Shared Values</a></li>
+            <li><a href="quality-policy.html" class="dropdown-item">Quality Policy</a></li>
+          </ul>
+        </li>
+
+        <li><a href="citizen-charter.html" class="nav-item" data-page="citizens-charter"><span class="nav-label">Citizen's Charter</span></a></li>
+
+        <li><a href="news.html" class="nav-item active" data-page="news" aria-current="page"><span class="nav-label">News</span></a></li>
+
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="issuances" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Issuances</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Issuances submenu">
+            <li class="dropdown-item-with-submenu">
+              <a href="joint-circulars.html" class="dropdown-item">
+                <span>Joint Circulars</span>
+              </a>
+            </li>
+            <li class="dropdown-item-with-submenu">
+              <a href="index.html" class="dropdown-item">
+                <span>Memo Circulars</span>
+              </a>
+            </li>
+            <li><a href="index.html" class="dropdown-item">Presidential Directives</a></li>
+            <li><a href="index.html" class="dropdown-item">Republic Acts</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="legal-opinion" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Legal Opinion</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Legal Opinion submenu">
+            <li><a href="legal-opinions.html?region=DILG%20Philippines" class="dropdown-item">DILG Philippines</a></li>
+            <li><a href="legal-opinions.html?region=Caraga%20Region" class="dropdown-item">Caraga Region</a></li>
+          </ul>
+        </li>
+        <li><a href="programs-and-services.html#programs-services" class="nav-item" data-page="programs"><span class="nav-label">Programs and Services</span></a></li>
+        <li><a href="contact-us.html" class="nav-item" data-page="contact"><span class="nav-label">Contact Us</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="LGRC-and-GAD.html" class="nav-link" data-page="lgrc-gad" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">LGRC and GAD</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="LGRC and GAD submenu">
+            <li><a href="about-lgrc.html" class="dropdown-item">About LGRC</a></li>
+            <li><a href="about-gad.html" class="dropdown-item">About GAD</a></li>
+            <li><a href="gad-corner.html" class="dropdown-item">GAD Corner</a></li>
+            <li><a href="msac.html" class="dropdown-item">MSAC</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="topnav-right"></div>
+  </nav>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo-row">
+        <img src="Logos/Department_of_the_Interior_and_Local_Government_(DILG)_Seal_-_Logo.svg" class="header-logo" alt="DILG logo" />
+        <img src="Logos/Bagong_Pilipinas_logo.png" alt="Bagong Pilipinas logo" class="header-logo" />
+        <img src="SUB-LGRC logo.png" alt="SUB-LGRC logo" class="header-logo" />
+        <img src="SURSUR LOGO.png" alt="Surigao del Sur logo" class="header-logo" />
+      </div>
+    </div>
+    <div class="topbar-center">
+      <div class="topbar-caption">REPUBLIC OF THE PHILIPPINES</div>
+      <div class="title-divider" aria-hidden="true"></div>
+      <div class="topbar-title">DEPARTMENT OF THE INTERIOR AND LOCAL GOVERNMENT</div>
+      <div class="topbar-subtitle">Province of Surigao del Sur</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-clock clock">
+        <div class="topbar-clock-date" id="topbar-date">Loading date...</div>
+        <div class="topbar-clock-time" id="topbar-time">Loading time...</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="page-news" class="page active" style="display:block; opacity:1;">
+      <div class="page-panel news-page-panel">
+        <div class="news-container">
+          <div class="news-header">
+            <h2>News and Updates</h2>
+            <p class="news-header-copy">Browse the latest announcements, official DILG videos, and news highlights from Surigao del Sur.</p>
+          </div>
+          <!-- ============================================================
+               ROW 1: FEATURED VIDEO EMBEDS  +  LATEST POSTS (SIDEBAR)
+               ============================================================ -->
+          <div class="news-row news-row-featured">
+
+            <!-- LEFT COLUMN: Facebook Video Embeds -->
+            <div class="news-left">
+              <!-- Featured Video 1 -->
+              <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=420&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1387575943254780%2F&show_text=false&width=560&t=0" width="560" height="420" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 2 -->
+              <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2090039575196057%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 3 -->
+              <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                 <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2018780145734234%2F&show_text=false&width=267&t=0" width="267" height="900" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 4 -->
+              <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F728429806926101%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 5 -->
+              <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F812349421886403%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 6 -->
+               <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1521676479838369%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 7 -->
+               <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2113560186058627%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+                </div>
+              </div>
+
+              <!-- Featured Video 8 -->
+               <div class="news-updates-panel">
+                <div class="news-embed news-embed-featured">
+                  <iframe src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1875906013053336%2F&show_text=false&width=267&t=0" width="267" height="476" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+              </div>
+            </div>
+            </div>
+            <!-- /END .news-left -->
+
+            <!-- RIGHT SIDEBAR: Latest Facebook Posts -->
+            <aside class="news-right" aria-label="Latest news cards">
+              <div class="news-updates-panel">
+                <h3 class="news-updates-title">Latest Posts</h3>
+                <div class="news-updates-list">
+
+                  <!-- Update Card 1 -->
+                  <article class="news-update-card">
+                    <div class="news-post">
+                      <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FDILGsds%2Fposts%2Fpfbid0RweC3E8A5t7JGBieXUt3QzvVagNrXNDxqPsgs7RbSxXgyLnfgjMvWDoFZxGsUw5ul&show_text=true&width=500" width="500" height="709" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                  </article>
+
+
+                  <!-- Update Card 2 -->
+                  <article class="news-update-card">
+                    <div class="news-post">
+                      <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FDILGsds%2Fposts%2Fpfbid0E73AM475RWo5VBY3Brp6NqsbSgQPQiHJ3cRPzRidf1eXDUAJUTC5YnDaGTBhdgNVl&show_text=true&width=500" width="500" height="690" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                  </article>
+
+                  <!-- Update Card 4 -->
+                  <article class="news-update-card">
+                    <div class="news-post">
+                      <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FDILGsds%2Fposts%2Fpfbid02QqRdUqSWmfhDjVBpNCiqEH2TBU7bADnsAXkdDbN9AhH8nXmNnXxeh9PXvzSGEZ1Sl&show_text=true&width=500" width="500" height="670" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                  </article>
+
+                   <!-- Update Card 5 -->
+                  <article class="news-update-card">
+                    <div class="news-post">
+                      <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FDILGsds%2Fposts%2Fpfbid02epXc8pDZw93YqRAunPZAkvyoZEUEnWKcxwSZFk2cDZwPHRfkks7ps6TmSSCTwuKpl&show_text=true&width=500" width="500" height="709" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                  </article>
+
+                   <!-- Update Card 6 -->
+                  <article class="news-update-card">
+                    <div class="news-post">
+                      <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FDILGsds%2Fposts%2Fpfbid02Vh5UJHGBCMvDA5VqzMYdvPskCbvWhDJE8i6cFTfXtReg6a3W5beei5Jw7AkYsJWZl&show_text=true&width=500" width="500" height="664" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                  </article>
+
+                </div>
+                <!-- /END .news-updates-list -->
+              </div>
+              <!-- /END .news-updates-panel (Latest Posts) -->
+            </aside>
+            <!-- /END .news-right -->
+
+          </div>
+          <!-- /END .news-row-featured -->
+          
+
+
+          <!-- ============================================================
+               ROW 2: CENTRAL NEWS  +  REGIONAL NEWS  (NEWS COLUMNS)
+               ============================================================ -->
+          <section class="news-ticker-section">
+        <div class="news_ticker" style="display: block;">
+          <h3 class="ticker_title">ADVISORY</h3>
+          <div class="tickercontainer">
+            <div class="mask">
+              <ul id="ticker" class="newsticker">
+                <li class="news-item">
+                  <a href="https://www.facebook.com/share/p/18yBEeKCHQ/">UNDP Philippines - 2026 Circular Solutions: Innovation Challenge and CSO Grants</a>
+                  <span>June 17, 2026</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="news-columns">
+          <div class="news-left-stack">
+            <div class="cn-layout">
+              <div class="cn-main">
+            <div class="cn-header">
+              <span class="cn-header-title">
+                CENTRAL NEWS
+              </span>
+              <a href="https://www.dilg.gov.ph/news-archive/" class="cn-more-btn" target="_blank" rel="noopener noreferrer">MORE</a>
+            </div>
+            <div class="cn-body">
+              <div class="cn-news-frame">
+                <h2 class="cn-news-title">DILG Statement on the BJMP's Custody of Senator Rodante Dizon Marcoleta</h2>
+                <div class="cn-news-date">July 15, 2026</div>
+                <div class="cn-news-copy">
+                  <p>The Department of the Interior and Local Government (DILG), through the Bureau of Jail Management and Penology (BJMP), confirms the commitment of Senator Rodante Dizon Marcoleta to the Quezon City Jail–Male Dormitory at 10:49 AM on July 15, 2026, pursuant to a Commitment Order issued by the Sandiganbayan Third Division in connection with a plunder case.</p>
+                  <p>The DILG assures the public that the BJMP will continue to uphold its mandate with professionalism, impartiality, and strict adherence to established rules and procedures. No person deprived of liberty under the Bureau's custody shall be accorded special treatment.</p>
+                </div>
+                <div class="cn-news-actions">
+                  <a href="#" class="cn-read-more">Read More</a>
+                </div>
+              </div>
+              <div class="cn-dots-row">
+                <span class="cn-dot active"></span>
+                <span class="cn-dot"></span>
+                <span class="cn-dot"></span>
+                <span class="cn-dot"></span>
+                <span class="cn-dot"></span>
+              </div>
+              <div class="cn-headline-links" aria-label="Central news headlines">
+                <ul class="cn-headline-list"></ul>
+              </div>
+            </div>
+          </div>
+            </div>
+
+            <div class="rn-layout">
+              <div class="rn-main">
+                <div class="cn-header">
+                  <span class="cn-header-title">
+                    REGIONAL NEWS
+                  </span>
+                  <a href="https://www.dilg.gov.ph/regional-news-archive/" class="cn-more-btn" target="_blank" rel="noopener noreferrer">MORE</a>
+                </div>
+                <div class="rn-body">
+                  <div class="rn-news-frame">
+                    <h2 class="rn-news-title">DILG-R6: Iloilo youth unite for drug-free communities at IDADAIT 2026 Youth Summit</h2>
+                    <div class="rn-news-date">July 15, 2026</div>
+                    <div class="rn-news-copy">
+                      <span class="rn-feature-media">
+                        <a href="https://www.dilg.gov.ph/images/news/dilg_news_2026715_8949eb7b88.png" target="_blank" rel="noopener noreferrer">
+                          <img src="https://www.dilg.gov.ph/resizeimgfluid.php?pics=dilg_news_2026715_8949eb7b88.png&w=630" alt="Regional news image" />
+                        </a>
+                      </span>
+                      <p>The Department of the Interior and Local Government Region 6, with the Provincial Government of Iloilo and PPSK Iloilo, gathered youth leaders in a summit focused on drug awareness, prevention, and youth-led action.</p>
+                      <p>The activity served as a platform for dialogue, capacity building, and collaborative initiatives among local youth organizations and student leaders.</p>
+                    </div>
+                    <div class="cn-news-actions">
+                      <a href="https://www.dilg.gov.ph/regional-news/DILG-R6-Iloilo-youth-unite-for-drug-free-communities-at-IDADAIT-2026-Youth-Summit/NR-2026-1049" class="rn-read-more cn-read-more" target="_blank" rel="noopener noreferrer">Read More</a>
+                    </div>
+                  </div>
+
+                  <div class="rn-dots-row">
+                    <span class="rn-dot active"></span>
+                    <span class="rn-dot"></span>
+                    <span class="rn-dot"></span>
+                    <span class="rn-dot"></span>
+                    <span class="rn-dot"></span>
+                  </div>
+
+                  <div class="rn-headline-links" aria-label="Regional news headlines">
+                    <ul class="rn-headline-list"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="cn-sidebar">
+            <a class="cn-portal-card" href="https://op-proper.gov.ph/" target="_blank" rel="noopener noreferrer">
+              <img src="https://www.dilg.gov.ph/images/banner/banner-president-corner.png" alt="Visit the Office of the President" />
+            </a>
+            <a class="cn-portal-card" href="https://www.dilg.gov.ph/secretarys-corner/" target="_blank" rel="noopener noreferrer">
+              <img src="https://www.dilg.gov.ph/images/banner/secretarys-corner.png" alt="Visit the Secretary's Corner" />
+            </a>
+            <a class="cn-portal-card" href="https://www.dilg.gov.ph/transparency/" target="_blank" rel="noopener noreferrer">
+              <img src="https://www.dilg.gov.ph/images/banner/banner-transparency-seal.png" alt="Philippine Transparency Seal" />
+            </a>
+
+            <div class="cn-secondary-row">
+              <a class="cn-sec-card" href="https://www.dilg.gov.ph/GAA-Reportorial-Requirement-Archive/" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.dilg.gov.ph/images/gaa2015.png" alt="GAA Reportorial Requirement" />
+              </a>
+              <a class="cn-sec-card" href="https://www.foi.gov.ph/agencies/dilg/" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.dilg.gov.ph/images/banner/foi-corner.jpg" alt="Freedom of Information" />
+              </a>
+              <a class="cn-sec-card" href="https://www.dilg.gov.ph/leo-70/" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.dilg.gov.ph/images/banner/leo70-box.png" alt="Localization of EO 70" />
+              </a>
+              <a class="cn-sec-card" href="https://www.dilg.gov.ph/files/dilg_document_202706_8dc37fea59.pdf" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.dilg.gov.ph/images/logo/dilg-dpa-cor-3.jpg" alt="Data Privacy" />
+              </a>
+              <a class="cn-sec-card" href="https://www.dilg.gov.ph/other/GAD-Corner/49" target="_blank" rel="noopener noreferrer">
+                <img src="https://www.dilg.gov.ph/images/gad-corner.jpg" alt="Gender and Development" />
+              </a>
+              <a class="cn-sec-card" href="https://www.facebook.com/dilg.philippines/" target="_blank" rel="noopener noreferrer">
+                <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fdilg.philippines&amp;width=380&amp;height=500&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=true&amp;show_border=true&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=false&amp;small_header=true" scrolling="yes" frameborder="0" style="background-color:#3A559F; border:3px solid #3A559F; border-right:4px solid #3A559F; overflow:hidden; width:100%; height:250px;" allowtransparency="true">
+              </iframe>
+            </div>
+            <div class="cn-fb-widget">
+              <iframe src="https://www.facebook.com/v2.5/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61556404163480&tabs=timeline%2Cevents&width=320&height=650&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                width="100%" height="650" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
+            </div>
+          </aside>
+        </div>
+      </section>
+              
+
+            </div>
+            <!-- /END .news-left-stack -->
+          </div>
+          <!-- /END .news-columns -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <p class="footer-label">ATTACHED AGENCIES</p>
+      <div class="footer-agencies">
+        <a href="https://napolcom.gov.ph/"><img src="Logos/National_Police_Commission_(NAPOLCOM).png" alt="NAPOLCOM logo" /></a>
+        <a href="https://bfp.gov.ph/"><img src="Logos/Bureau_of_Fire_Protection.png" alt="BFP logo" /></a>
+        <a href="https://pnp.gov.ph/"><img src="Logos/1920px-Philippine_National_Police_seal.svg.webp" alt="PNP logo" /></a>
+        <a href="https://lga.gov.ph/"><img src="Logos/3840px-Local_Government_Academy_(LGA).svg.webp" alt="LGA logo" /></a>
+        <a href="https://ppsc.gov.ph/"><img src="Logos/Philippine_Public_Safety_College.png" alt="PPSC logo" /></a>
+        <a href="https://bjmp.gov.ph/"><img src="Logos/Bureau_of_Jail_Management_and_Penology.png" alt="BJMP logo" /></a>
+        <a href="https://ncmf.gov.ph/"><img src="Logos/National_Commission_on_Muslim_Filipinos.png" alt="NCMF logo" /></a>
+        <a href="https://hpg.gov.ph/"><img src="Logos/Highway_Patrol_Group.png" alt="HPG logo" /></a>
+        <a href="https://nyc.gov.ph/"><img src="Logos/3840px-National_Youth_Commission_Philippines.svg.webp" alt="NYC logo" /></a>
+        <a href="https://pcw.gov.ph/"><img src="Logos/3840px-Philippine_Commission_on_Women_(PCW).svg.webp" alt="PCW logo" /></a>
+      </div>
+    </div>
+
+    <div class="footer-main">
+      <div class="footer-brand">
+        <img src="Logos/toppng.com-republic-of-the-philippines-logo-1200x1331.png" alt="Republic of the Philippines logo" class="footer-main-logo" />
+        <div>
+          <p class="footer-brand-title">REPUBLIC OF THE PHILIPPINES</p>
+          <p class="footer-brand-subtitle">DILG Surigao del Sur Province</p>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h3>GOVERNMENT LINKS</h3>
+        <ul>
+          <li><a href="#">Office of the President</a></li>
+          <li><a href="#">Office of the Vice President</a></li>
+          <li><a href="#">Senate of the Philippines</a></li>
+          <li><a href="#">House of Representatives</a></li>
+          <li><a href="#">Supreme Court</a></li>
+          <li><a href="#">Court of Appeals</a></li>
+          <li><a href="#">Sandiganbayan</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-connect">
+        <h3>Connect with us</h3>
+        <div class="footer-connect-widget">
+          <a href="https://www.facebook.com/DILGsds" target="_blank" rel="noreferrer noopener" class="connect-card" aria-label="Open DILG Surigao del Sur Facebook page (opens in new tab)">
+            <span class="connect-icon" aria-hidden="true">
+              <img src="Logos/2021_Facebook_icon.svg" alt="Facebook icon" />
+            </span>
+            <span class="connect-content">
+              <span class="connect-title">Like us on Facebook</span>
+              <span class="connect-sub">Be updated about DILG</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MSAC - DILG Surigao del Sur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .msac-page-panel {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 48px 40px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(15, 42, 107, 0.08);
+      border: 1px solid rgba(31, 95, 207, 0.10);
+    }
+    .msac-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .msac-header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      color: var(--navy-dark);
+      letter-spacing: -0.03em;
+    }
+    .msac-header .msac-eyebrow {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 999px;
+      background: rgba(246, 185, 59, 0.18);
+      color: var(--navy-dark);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .msac-section {
+      margin-bottom: 36px;
+    }
+    .msac-section h2 {
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin: 0 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--blue);
+      display: inline-block;
+    }
+    .msac-section p {
+      color: var(--text);
+      line-height: 1.9;
+      font-size: 1.05rem;
+      margin: 0 0 16px;
+    }
+    .msac-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .msac-card {
+      padding: 24px;
+      border-radius: 16px;
+      background: #f8fbff;
+      border: 1px solid rgba(31, 95, 207, 0.10);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .msac-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(15, 42, 107, 0.08);
+    }
+    .msac-card .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue), #1760c7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+    .msac-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      color: var(--navy);
+    }
+    .msac-card p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 760px) {
+      .msac-page-panel { padding: 28px 20px; }
+      .msac-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav" aria-label="Primary">
+    <div class="topnav-center">
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-item" data-page="home"><span class="nav-label">Home</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="about" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">About Us</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="About Us submenu">
+            <li><a href="organizational-structure.html" class="dropdown-item">Organizational Structure</a></li>
+            <li><a href="elected-officials.html" class="dropdown-item">Elected Officials</a></li>
+            <li><a href="mission-vision-values.html" class="dropdown-item">Mission, Vision & Shared Values</a></li>
+            <li><a href="quality-policy.html" class="dropdown-item">Quality Policy</a></li>
+          </ul>
+        </li>
+        <li><a href="citizen-charter.html" class="nav-item" data-page="citizens-charter"><span class="nav-label">Citizen's Charter</span></a></li>
+        <li><a href="news.html" class="nav-item" data-page="news"><span class="nav-label">News</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="issuances" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Issuances</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Issuances submenu">
+            <li class="dropdown-item-with-submenu">
+              <a href="joint-circulars.html" class="dropdown-item"><span>Joint Circulars</span></a>
+            </li>
+            <li class="dropdown-item-with-submenu">
+              <a href="memo-circulars.html" class="dropdown-item"><span>Memo Circulars</span></a>
+            </li>
+            <li><a href="presidential-directives.html" class="dropdown-item">Presidential Directives</a></li>
+            <li><a href="republic-acts.html" class="dropdown-item">Republic Acts</a></li>
+          </ul>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="legal-opinion" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Legal Opinion</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Legal Opinion submenu">
+            <li><a href="legal-opinions.html?region=DILG%20Philippines" class="dropdown-item">DILG Philippines</a></li>
+            <li><a href="legal-opinions.html?region=Caraga%20Region" class="dropdown-item">Caraga Region</a></li>
+          </ul>
+        </li>
+        <li><a href="programs-and-services.html#programs-services" class="nav-item" data-page="programs"><span class="nav-label">Programs and Services</span></a></li>
+        <li><a href="contact-us.html" class="nav-item" data-page="contact"><span class="nav-label">Contact Us</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="LGRC-and-GAD.html" class="nav-link active" data-page="lgrc-gad" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">LGRC and GAD</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="LGRC and GAD submenu">
+            <li><a href="about-lgrc.html" class="dropdown-item">About LGRC</a></li>
+            <li><a href="about-gad.html" class="dropdown-item">About GAD</a></li>
+            <li><a href="gad-corner.html" class="dropdown-item">GAD Corner</a></li>
+            <li><a href="msac.html" class="dropdown-item active" aria-current="page">MSAC</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="topnav-right"></div>
+  </nav>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo-row">
+        <img src="Logos/Department_of_the_Interior_and_Local_Government_(DILG)_Seal_-_Logo.svg" class="header-logo" alt="DILG Seal" />
+        <img src="Logos/Bagong_Pilipinas_logo.png" alt="Bagong Pilipinas logo" class="header-logo" />
+        <img src="SUB-LGRC logo.png" alt="SUB-LGRC logo" class="header-logo" />
+        <img src="SURSUR LOGO.png" alt="Surigao del Sur logo" class="header-logo" />
+      </div>
+    </div>
+    <div class="topbar-center">
+      <div class="topbar-caption">REPUBLIC OF THE PHILIPPINES</div>
+      <div class="title-divider" aria-hidden="true"></div>
+      <div class="topbar-title">DEPARTMENT OF THE INTERIOR AND LOCAL GOVERNMENT</div>
+      <div class="topbar-subtitle">Province of Surigao del Sur</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-clock clock">
+        <div class="topbar-clock-date" id="topbar-date">Loading date...</div>
+        <div class="topbar-clock-time" id="topbar-time">Loading time...</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="msac-page-panel">
+      <div class="msac-header">
+        <div class="msac-eyebrow">Municipal Services Advisory Committee</div>
+        <h1>MSAC</h1>
+        <p style="color: var(--muted); max-width: 700px; margin: 12px auto 0; line-height: 1.7;">The Municipal Services Advisory Committee (MSAC) serves as an advisory body to ensure effective and efficient delivery of municipal services.</p>
+      </div>
+
+      <div class="msac-section">
+        <h2>About MSAC</h2>
+        <p>The Municipal Services Advisory Committee (MSAC) is a mechanism established to strengthen local governance by providing advisory support to municipal governments. It aims to enhance service delivery through coordinated efforts between national agencies and local government units.</p>
+      </div>
+
+      <div class="msac-section">
+        <h2>Key Functions</h2>
+        <div class="msac-grid">
+          <div class="msac-card">
+            <div class="card-icon">📋</div>
+            <h3>Advisory Support</h3>
+            <p>Provide technical advice and recommendations to municipal LGUs on improving service delivery and governance systems.</p>
+          </div>
+          <div class="msac-card">
+            <div class="card-icon">🤝</div>
+            <h3>Coordination</h3>
+            <p>Facilitate coordination between national government agencies, provincial offices, and municipal LGUs for aligned program implementation.</p>
+          </div>
+          <div class="msac-card">
+            <div class="card-icon">📊</div>
+            <h3>Monitoring & Evaluation</h3>
+            <p>Monitor the implementation of municipal programs and projects, and evaluate their impact on local communities.</p>
+          </div>
+          <div class="msac-card">
+            <div class="card-icon">📚</div>
+            <h3>Capacity Building</h3>
+            <p>Support capacity development initiatives for municipal officials and staff to enhance their technical and administrative capabilities.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="msac-section">
+        <h2>Scope of Services</h2>
+        <p>The MSAC covers advisory services across the following areas:</p>
+        <ul style="list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px;">
+          <li style="padding: 14px 18px; background: #f8fbff; border-radius: 12px; border-left: 4px solid var(--blue);">
+            <strong>Local Governance Performance</strong> — Advisory on LGPMS, SGLG compliance, and governance performance improvement.
+          </li>
+          <li style="padding: 14px 18px; background: #f8fbff; border-radius: 12px; border-left: 4px solid var(--blue);">
+            <strong>Fiscal Administration</strong> — Guidance on local fiscal management, budgeting, and resource mobilization.
+          </li>
+          <li style="padding: 14px 18px; background: #f8fbff; border-radius: 12px; border-left: 4px solid var(--blue);">
+            <strong>Social Services</strong> — Advisory on the delivery of health, education, social welfare, and other basic services.
+          </li>
+          <li style="padding: 14px 18px; background: #f8fbff; border-radius: 12px; border-left: 4px solid var(--blue);">
+            <strong>Infrastructure & Development</strong> — Technical assistance on local planning, infrastructure projects, and economic development.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <p class="footer-label">ATTACHED AGENCIES</p>
+      <div class="footer-agencies">
+        <a href="https://napolcom.gov.ph/"><img src="Logos/National_Police_Commission_(NAPOLCOM).png" alt="NAPOLCOM logo"/></a>
+        <a href="https://bfp.gov.ph/"><img src="Logos/Bureau_of_Fire_Protection.png" alt="BFP logo" /></a>
+        <a href="https://pnp.gov.ph/"><img src="Logos/1920px-Philippine_National_Police_seal.svg.webp" alt="PNP logo" /></a>
+        <a href="https://lga.gov.ph/"><img src="Logos/3840px-Local_Government_Academy_(LGA).svg.webp" alt="LGA logo" /></a>
+        <a href="https://ppsc.gov.ph/"><img src="Logos/Philippine_Public_Safety_College.png" alt="PPSC logo" /></a>
+        <a href="https://bjmp.gov.ph/"><img src="Logos/Bureau_of_Jail_Management_and_Penology.png" alt="BJMP logo" /></a>
+        <a href="https://ncmf.gov.ph/"><img src="Logos/National_Commission_on_Muslim_Filipinos.png" alt="NCMF logo" /></a>
+        <a href="https://hpg.gov.ph/"><img src="Logos/Highway_Patrol_Group.png" alt="HPG logo" /></a>
+        <a href="https://nyc.gov.ph/" ><img src="Logos/3840px-National_Youth_Commission_Philippines.svg.webp" alt="NYC logo" /></a>
+        <a href="https://pcw.gov.ph/"><img src="Logos/3840px-Philippine_Commission_on_Women_(PCW).svg.webp" alt="PCW logo" /></a>
+      </div>
+    </div>
+    <div class="footer-main">
+      <div class="footer-brand">
+        <img src="Logos/toppng.com-republic-of-the-philippines-logo-1200x1331.png" alt="Republic of the Philippines logo" class="footer-main-logo" />
+        <div>
+          <p class="footer-brand-title">REPUBLIC OF THE PHILIPPINES</p>
+          <p class="footer-brand-subtitle">DILG Surigao del Sur Province</p>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>GOVERNMENT LINKS</h3>
+        <ul>
+          <li><a href="#">Office of the President</a></li>
+          <li><a href="#">Office of the Vice President</a></li>
+          <li><a href="#">Senate of the Philippines</a></li>
+          <li><a href="#">House of Representatives</a></li>
+          <li><a href="#">Supreme Court</a></li>
+          <li><a href="#">Court of Appeals</a></li>
+          <li><a href="#">Sandiganbayan</a></li>
+        </ul>
+      </div>
+      <div class="footer-connect">
+        <h3>Connect with us</h3>
+        <div class="footer-connect-widget">
+          <a href="https://www.facebook.com/DILGsds" target="_blank" rel="noreferrer noopener" class="connect-card" aria-label="Open DILG Surigao del Sur Facebook page (opens in new tab)">
+            <span class="connect-icon" aria-hidden="true">
+              <img src="Logos/2021_Facebook_icon.svg" alt="Facebook icon" />
+            </span>
+            <span class="connect-content">
+              <span class="connect-title">Like us on Facebook</span>
+              <span class="connect-sub">Be updated about DILG</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    (function() {
+      const timeEl = document.getElementById('topbar-time');
+      const dateEl = document.getElementById('topbar-date');
+      function updateClock() {
+        try {
+          const now = new Date();
+          const phTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Manila' }));
+          const weekday = phTime.toLocaleDateString('en-PH', { weekday: 'long', timeZone: 'Asia/Manila' });
+          const month = phTime.toLocaleDateString('en-PH', { month: 'long', timeZone: 'Asia/Manila' });
+          const day = phTime.toLocaleDateString('en-PH', { day: 'numeric', timeZone: 'Asia/Manila' });
+          const year = phTime.toLocaleDateString('en-PH', { year: 'numeric', timeZone: 'Asia/Manila' });
+          const timeString = phTime.toLocaleTimeString('en-PH', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Manila' });
+          if (dateEl) dateEl.textContent = weekday + ', ' + month + ' ' + day + ', ' + year;
+          if (timeEl) timeEl.textContent = timeString + ' Tandag City';
+        } catch(e) { 
+          if (dateEl) dateEl.textContent = 'Date unavailable';
+          if (timeEl) timeEl.textContent = 'Time unavailable';
+        }
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+  </script>
+</body>
+</html>
+

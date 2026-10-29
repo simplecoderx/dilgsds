@@ -1,0 +1,922 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elected Officials Directory - DILG Surigao del Sur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* === Elected Officials Page === */
+    /* Override global main max-width so cards span full viewport width */
+    main { max-width: 100%; }
+    .eo-page { margin: 36px 0 64px; padding: 0; }
+    .eo-page-header { text-align: center; margin-bottom: 36px; padding: 0 24px; }
+    .eo-page-header h1 { font-size: clamp(1.8rem, 3vw, 2.6rem); color: #0f2a6b; font-weight: 800; margin: 0 0 8px; }
+    .eo-page-header p { margin: 0 auto; max-width: 600px; color: #64748b; font-size: 1rem; }
+
+    .eo-officials-list {
+      border-radius: 18px; overflow: hidden;
+    }
+
+    /* Card row: 4 columns */
+    .eo-card {
+      display: grid;
+      grid-template-columns: 180px 260px 1fr 240px;
+      align-items: start;
+      padding: 32px 80px;
+      border-bottom: 1px solid #e2e8f0;
+      column-gap: 0;
+    }
+    .eo-card:last-child { border-bottom: none; }
+    .eo-card:nth-child(odd)  { background: #f6f8fc; }
+    .eo-card:nth-child(even) { background: #ffffff; }
+
+    /* Column 1: Seal */
+    .eo-seal { display: flex; justify-content: center; align-items: center; padding-right: 24px; }
+    .eo-seal img { width: 130px; height: 130px; object-fit: contain; }
+
+    /* Column 2: Office title */
+    .eo-office-title { display: flex; align-items: center; padding-right: 24px; }
+    .eo-office-title h2 { margin: 0; font-size: 1.2rem; font-weight: 700; color: #1a3870; line-height: 1.4; }
+
+    /* Column 3: Contact */
+    .eo-contact-col { padding: 0 28px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; }
+    .eo-contact-main { display: flex; align-items: flex-start; gap: 16px; }
+    .eo-photo {
+      width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+      flex-shrink: 0; background: #cbd5e1; border: 2px solid #dde4f0;
+    }
+    .eo-contact-body { flex: 1; min-width: 0; }
+    .eo-expand-row { display: flex; align-items: flex-start; gap: 6px; }
+    .eo-contact-info { flex: 1; }
+    .eo-official-name { margin: 0 0 6px; font-size: 1rem; font-weight: 600; color: #1e293b; }
+    .eo-contact-info p { margin: 0 0 4px; font-size: 0.875rem; color: #475569; line-height: 1.6; }
+
+    /* Expand/collapse chevron button */
+    .eo-expand-btn {
+      background: none; border: none; cursor: pointer; color: #64748b;
+      padding: 2px; flex-shrink: 0; display: flex; align-items: center;
+      transition: transform 0.28s ease, color 0.15s;
+      margin-top: 2px;
+    }
+    .eo-expand-btn:hover { color: #0f2a6b; }
+    .eo-expand-btn.expanded { transform: rotate(180deg); color: #0f2a6b; }
+    .eo-expand-btn svg { width: 20px; height: 20px; }
+
+    /* Slide panel */
+    .eo-expand-panel {
+      max-height: 0; overflow: hidden;
+      transition: max-height 400ms cubic-bezier(0.25,0.8,0.25,1);
+    }
+    .eo-expand-panel.open { max-height: 1600px; }
+    .eo-expand-inner { margin-top: 14px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+    .eo-expand-inner p { margin: 0 0 4px; font-size: 0.875rem; color: #334155; line-height: 1.6; }
+    .eo-expand-inner .eo-district { font-weight: 700; color: #1e293b; margin-top: 10px; }
+    .eo-expand-inner .eo-ex-officio-members { font-weight: 700; color: #1e293b; margin-top: 10px; }
+
+    /* Column 4: Action buttons */
+    .eo-actions { padding-left: 28px; display: flex; flex-direction: column; gap: 12px; }
+    .eo-btn {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 22px; border-radius: 999px; border: none;
+      background: #0f2a6b; color: #ffffff;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.07em;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.15s;
+      min-height: 50px; min-width: 200px;
+    }
+    .eo-btn:hover { background: #1a3d8f; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(15,42,107,0.22); }
+    .eo-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+    /* Tablet */
+    @media (max-width: 1200px) {
+      .eo-card {
+        grid-template-columns: 140px 200px 1fr 210px;
+        padding: 28px 40px;
+      }
+      .eo-seal img { width: 110px; height: 110px; }
+    }
+    @media (max-width: 1040px) {
+      .eo-card {
+        grid-template-columns: 96px 1fr 190px;
+        grid-template-areas: "seal title actions" ". contact actions";
+        column-gap: 14px; row-gap: 14px; padding: 22px 24px;
+      }
+      .eo-seal { grid-area: seal; }
+      .eo-seal img { width: 84px; height: 84px; }
+      .eo-office-title { grid-area: title; padding-right: 0; }
+      .eo-contact-col { grid-area: contact; border: none; padding: 0; }
+      .eo-actions { grid-area: actions; border-left: 1px solid #e2e8f0; }
+      .eo-btn { min-width: unset; }
+    }
+    /* Mobile */
+    @media (max-width: 640px) {
+      .eo-card {
+        grid-template-columns: 1fr;
+        grid-template-areas: "seal" "title" "contact" "actions";
+        padding: 18px 16px;
+      }
+      .eo-seal { justify-content: flex-start; padding-right: 0; }
+      .eo-actions { border-left: none; padding-left: 0; flex-direction: row; flex-wrap: wrap; }
+      .eo-btn { flex: 1 1 130px; justify-content: center; min-width: unset; }
+    }
+
+    /* Modal (preserved) */
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 1200; align-items: center; justify-content: center; padding: 24px; background: rgba(4,19,66,0.68); }
+    .modal-overlay.open { display: flex; }
+    .modal-backdrop { position: absolute; inset: 0; }
+    .modal-panel { position: relative; width: min(760px,100%); max-height: calc(100vh - 80px); overflow-y: auto; padding: 28px; border-radius: 22px; background: #fff; box-shadow: 0 30px 90px rgba(15,42,107,0.22); }
+    .modal-close { position: absolute; top: 18px; right: 18px; border: none; background: transparent; color: #0f2a6b; font-size: 1.9rem; cursor: pointer; }
+    .modal-heading { margin: 0 0 18px; font-family: 'Alice', serif; font-size: 1.7rem; color: #0f2a6b; }
+    .modal-form-grid { display: grid; gap: 18px; }
+    .modal-field { display: flex; flex-direction: column; gap: 8px; }
+    .modal-field label { font-size: 0.95rem; color: #0f2a6b; font-weight: 700; }
+    .modal-field input, .modal-field textarea { width: 100%; min-height: 44px; padding: 12px 14px; border: 1px solid rgba(15,42,107,0.18); border-radius: 12px; font-size: 0.95rem; color: #1f3250; font-family: inherit; }
+    .modal-field textarea { min-height: 100px; resize: vertical; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .modal-actions button { min-width: 120px; padding: 12px 18px; border-radius: 999px; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .modal-actions .cancel-btn { background: #f1f5fb; color: #0f2a6b; }
+    .modal-actions .submit-btn { background: #0f2a6b; color: #fff; }
+    .modal-actions button:hover { transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <nav class="topnav" aria-label="Primary">
+    <div class="topnav-center">
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-item" data-page="home"><span class="nav-label">Home</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link active" data-page="about" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">About Us</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="About Us submenu">
+            <li><a href="organizational-structure.html" class="dropdown-item">Organizational Structure</a></li>
+            <li><a href="elected-officials.html" class="dropdown-item active" aria-current="page">Elected Officials</a></li>
+            <li><a href="mission-vision-values.html" class="dropdown-item">Mission, Vision &amp; Shared Values</a></li>
+            <li><a href="quality-policy.html" class="dropdown-item">Quality Policy</a></li>
+          </ul>
+        </li>
+        <li><a href="citizen-charter.html" class="nav-item" data-page="citizens-charter"><span class="nav-label">Citizen's Charter</span></a></li>
+        <li><a href="news.html" class="nav-item" data-page="news"><span class="nav-label">News</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="issuances" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Issuances</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Issuances submenu">
+            <li class="dropdown-item-with-submenu">
+              <a href="joint-circulars.html" class="dropdown-item"><span>Joint Circulars</span></a>
+            </li>
+            <li class="dropdown-item-with-submenu">
+              <a href="memo-circulars.html" class="dropdown-item"><span>Memo Circulars</span></a>
+            </li>
+            <li><a href="presidential-directives.html" class="dropdown-item">Presidential Directives</a></li>
+            <li><a href="republic-acts.html" class="dropdown-item">Republic Acts</a></li>
+          </ul>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="#" class="nav-link" data-page="legal-opinion" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">Legal Opinion</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="Legal Opinion submenu">
+            <li><a href="legal-opinions.html?region=DILG%20Philippines" class="dropdown-item">DILG Philippines</a></li>
+            <li><a href="legal-opinions.html?region=Caraga%20Region" class="dropdown-item">Caraga Region</a></li>
+          </ul>
+        </li>
+        <li><a href="programs-and-services.html#programs-services" class="nav-item" data-page="programs"><span class="nav-label">Programs and Services</span></a></li>
+        <li><a href="contact-us.html" class="nav-item" data-page="contact"><span class="nav-label">Contact Us</span></a></li>
+        <li class="nav-item has-dropdown">
+          <a href="LGRC-and-GAD.html" class="nav-link" data-page="lgrc-gad" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-label">LGRC and GAD</span>
+            <span class="nav-arrow" aria-hidden="true">▾</span>
+          </a>
+          <ul class="nav-dropdown" aria-label="LGRC and GAD submenu">
+            <li><a href="about-lgrc.html" class="dropdown-item">About LGRC</a></li>
+            <li><a href="about-gad.html" class="dropdown-item">About GAD</a></li>
+            <li><a href="gad-corner.html" class="dropdown-item">GAD Corner</a></li>
+            <li><a href="msac.html" class="dropdown-item">MSAC</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="topnav-right"></div>
+  </nav>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo-row">
+        <img src="DILG Seal.png" alt="DILG logo" class="header-logo" />
+        <img src="Bagong_Pilipinas_logo.png" alt="Bagong Pilipinas logo" class="header-logo" />
+        <img src="SUB-LGRC logo.png" alt="SUB-LGRC logo" class="header-logo" />
+        <img src="SURSUR LOGO.png" alt="Surigao del Sur logo" class="header-logo" />
+      </div>
+    </div>
+    <div class="topbar-center">
+      <div class="topbar-caption">REPUBLIC OF THE PHILIPPINES</div>
+      <div class="title-divider" aria-hidden="true"></div>
+      <div class="topbar-title">DEPARTMENT OF THE INTERIOR AND LOCAL GOVERNMENT</div>
+      <div class="topbar-subtitle">Province of Surigao del Sur</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-clock clock">
+        <div class="topbar-clock-date" id="topbar-date">Loading date...</div>
+        <div class="topbar-clock-time" id="topbar-time">Loading time...</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="eo-page">
+      <div class="eo-page-header">
+        <h1>Elected Officials Directory</h1>
+        <p>Elected officials of Surigao del Sur Province and their contact information</p>
+      </div>
+
+      <div class="eo-officials-list" id="officialsDirectory" aria-live="polite">
+
+        <!-- Card 1: Representative, 1st District -->
+        <div class="eo-card">
+          <div class="eo-seal">
+            <img src="Logos/Seal_of_the_Philippine_House_of_Representatives.svg"
+                 alt="House of Representatives seal" />
+          </div>
+          <div class="eo-office-title">
+            <h2>Representative,<br>1st District of<br>Surigao del Sur</h2>
+          </div>
+          <div class="eo-contact-col">
+            <div class="eo-contact-main">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVR7F60DcA9t9gwXa6VqxOFiAGsCBWGQ1kJ3_KBT5C8OvpFX5GSLOYtMEfDqB4gpwxDSVgkkW5jbEc_A-PG9L5PtneHXrhq56XvQKz0Taz_E62O7-mXScJD2F0IHSXlsCVV6Bj9YCFP3E56GeMVE7u3GpbBdobXb6HIxvyk4lbJy5FXhb3t_QSYqCvZlE3FrcWabQt7mmVgzmeD3o0I0J4nM4EiAejodz9vYmJN=w1280"
+                   class="eo-photo" alt="Congressman Romeo S. Momo Sr." />
+              <div class="eo-contact-body">
+                <div class="eo-contact-info">
+                  <p class="eo-official-name">Congressman Romeo S. Momo Sr.</p>
+                  <p>Phone: (632) 8931-5001, Local: 7344</p>
+                  <p>Direct: 8931-5624</p>
+                  <p>House of Representatives, Quezon City</p>
+                  <p>Rm. NW-305</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eo-actions">
+            <a href="https://www.facebook.com/RommelRicoAngara/" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>FACEBOOK</span>
+            </a>
+            <a href="https://www.congress.gov.ph/" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>WEBSITE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: Representative, 2nd District -->
+        <div class="eo-card">
+          <div class="eo-seal">
+            <img src="Logos/Seal_of_the_Philippine_House_of_Representatives.svg"
+                 alt="House of Representatives seal" />
+          </div>
+          <div class="eo-office-title">
+            <h2>Representative,<br>2nd District of<br>Surigao del Sur</h2>
+          </div>
+          <div class="eo-contact-col">
+            <div class="eo-contact-main">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVR7F60DcA9t9gwXa6VqxOFiAGsCBWGQ1kJ3_KBT5C8OvpFX5GSLOYtMEfDqB4gpwxDSVgkkW5jbEc_A-PG9L5PtneHXrhq56XvQKz0Taz_E62O7-mXScJD2F0IHSXlsCVV6Bj9YCFP3E56GeMVE7u3GpbBdobXb6HIxvyk4lbJy5FXhb3t_QSYqCvZlE3FrcWabQt7mmVgzmeD3o0I0J4nM4EiAejodz9vYmJN=w1280"
+                   class="eo-photo" alt="Congressman Alexander T. Pimentel" />
+              <div class="eo-contact-body">
+                <div class="eo-contact-info">
+                  <p class="eo-official-name">Congressman Alexander T. Pimentel</p>
+                  <p>Phone: (632) 8931-5001, Local: 7344</p>
+                  <p>Direct: 8931-5624</p>
+                  <p>House of Representatives, Quezon City</p>
+                  <p>Rm. NW-305</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="eo-actions">
+            <a href="#" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>FACEBOOK</span>
+            </a>
+            <a href="https://www.congress.gov.ph/" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>WEBSITE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Provincial Government (with accordion) -->
+        <div class="eo-card">
+          <div class="eo-seal">
+            <img src="Logos/960px-Surigao_del_Sur_Flag.png"
+                 alt="Provincial Government seal" />
+          </div>
+          <div class="eo-office-title">
+            <h2>Provincial Government of Surigao del Sur</h2>
+          </div>
+          <div class="eo-contact-col">
+            <div class="eo-contact-main">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWjYyHmgT0iEmbOv66iMOItnVIrRLrh7cg2AimVDRvL7zHxXox7JcPnHCDNJF0bYDIpj8CzlfcHZ4sR-zsy0SytHeLvldzB1B2XLYZ-SFdWV5tagdoQUl7eVKxXpWphov_9I4XEx_AC3ArXG7qjGaahea1vT7x-bItyfLmxFlzafbmettW0tDpb7HlrPxE=w1280"
+                   class="eo-photo" alt="Governor" />
+              <div class="eo-contact-body">
+                <div class="eo-expand-row">
+                  <div class="eo-contact-info">
+                    <p class="eo-official-name">Governor Alexander T. Pimentel</p>
+                    <p>governor@surigaodelsur.gov.ph</p>
+                    <p>Capitol Complex, Tandag City, Surigao del Sur</p>
+                  </div>
+                  <button class="eo-expand-btn" aria-expanded="false"
+                          aria-label="Expand to show more officials"
+                          data-expand-target="pg-sds-expand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="eo-expand-panel" id="pg-sds-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Governor Hon. Manuel O. Alameda Sr.</p>
+                <p>Sangguniang Panlalawigan</p>
+                <p class="eo-district">1st District</p>
+                <p>Hon. Ruel D. Momo</p>
+                <p>Hon. Henrich M. Pimentel</p>
+                <p>Hon. Jose Dumagan, Jr.</p>
+                <p>Hon. Antonio C. Azarcon</p>
+                <p>Hon. Valero T. Montesclaros</p>
+                <p class="eo-district">2nd District</p>
+                <p>Hon. Joey S. Pama</p>
+                <p>Hon. Gines Ricky J. Sayawan, Sr.</p>
+                <p>Hon. Margarita G. Garay</p>
+                <p>Hon. Anthony Joseph P. Canedo</p>
+                <p>Hon. Raul K. Salazar</p>
+                <p class="eo-ex-officio-members">Ex-Officio Members</p>
+                <p>Hon. John Paul C. Pimentel</p>
+                <p>Hon. Melanie Joy M. Guno</p>
+                <p>Hon. Jimmy I. Guinsod</p>
+                <p>Hon. Yury Art Eufy R. Sanchez</p>
+          </div>
+        </div>
+      </div>
+          <div class="eo-actions">
+            <a href="https://www.facebook.com/DILGsds" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>FACEBOOK</span>
+            </a>
+            <a href="https://surigaodelsur.gov.ph/" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>WEBSITE</span>
+            </a>
+            <a href="#" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>LGU PROFILE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 4: Tandag City Mayor -->
+        <div class="eo-card">
+          <div class="eo-seal">
+            <img src="Logos/960px-Surigao_del_Sur_Flag.png"
+                 alt="Provincial Government seal" />
+          </div>
+          <div class="eo-office-title">
+            <h2>Tandag City</h2>
+          </div>
+          <div class="eo-contact-col">
+            <div class="eo-contact-main">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWjYyHmgT0iEmbOv66iMOItnVIrRLrh7cg2AimVDRvL7zHxXox7JcPnHCDNJF0bYDIpj8CzlfcHZ4sR-zsy0SytHeLvldzB1B2XLYZ-SFdWV5tagdoQUl7eVKxXpWphov_9I4XEx_AC3ArXG7qjGaahea1vT7x-bItyfLmxFlzafbmettW0tDpb7HlrPxE=w1280"
+                   class="eo-photo" alt="Mayor Tandag City" />
+              <div class="eo-contact-body">
+                <div class="eo-expand-row">
+                  <div class="eo-contact-info">
+                    <p class="eo-official-name">Mayor Roxanne C. Pimentel</p>
+                    <p>governor@surigaodelsur.gov.ph</p>
+                    <p>Capitol Complex, Tandag City, Surigao del Sur</p>
+                  </div>
+                  <button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-tandag-expand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="eo-expand-panel" id="mayor-tandag-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Eleanor D. Momo</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Maria Lourdes Kharin C. Momo</p>
+                <p>2. John Paul C. Pimentel</p>
+                <p>3. Alvin C. TY, Jr.</p>
+                <p>4. Rosario Ninfa G. Dumagan II</p>
+                <p>5. Andrei A. Andresan</p>
+                <p>6. Gay Geraldine G. Tan</p>
+                <p>7. Hyna Jean R. Boniao</p>
+                <p>8. Imelda C. Falcon</p>
+                <p>9. Antonio V. Salazar</p>
+                <p>10. AL P. Geli</p>
+              </div>
+            </div>
+          </div>
+          <div class="eo-actions">
+            <a href="https://www.facebook.com/DILGsds" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>FACEBOOK</span>
+            </a>
+            <a href="https://surigaodelsur.gov.ph/" target="_blank" rel="noreferrer noopener" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>WEBSITE</span>
+            </a>
+            <a href="#" class="eo-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>LGU PROFILE</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Additional Mayors (placeholders until official details are provided) -->
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Bayabas</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Bayabas mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Apolonio B. Lozada</p><p>Contact details to be updated</p><p>Municipal Hall, Bayabas, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-bayabas-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-bayabas-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Maria Clarita G. Limbaro</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Placido B. Ronquillo</p>
+                <p>2. Edgardo J. Butad</p>
+                <p>3. Gerald M. Ambray</p>
+                <p>4. Ian B. Armenia</p>
+                <p>5. Louime Z. Maglagit</p>
+                <p>6. Rufo L. Ordona</p>
+                <p>7. Nicholson Y. Lozada</p>
+                <p>8. Madelyn V. Lozada</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Cagwait</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Cagwait mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Glenn G. Batiancila</p><p>Contact details to be updated</p><p>Municipal Hall, Cagwait, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-cagwait-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-cagwait-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor (to be updated)</p>
+                <p class="eo-district">Sangguniang Bayan Members</p>
+                <p>1. (to be updated)</p>
+                <p>2. (to be updated)</p>
+                <p>3. (to be updated)</p>
+                <p>4. (to be updated)</p>
+                <p>5. (to be updated)</p>
+                <p>6. (to be updated)</p>
+                <p>7. (to be updated)</p>
+                <p>8. (to be updated)</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Cantilan</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Cantilan mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Philip A. Pichay</p><p>Contact details to be updated</p><p>Municipal Hall, Cantilan, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-cantilan-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-cantilan-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Rodrigo L. Eleazar</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Liberty G. Cale</p>
+                <p>2. Genito B. Guardo</p>
+                <p>3. Florena A. Uriarte</p>
+                <p>4. Charles P. Arreza</p>
+                <p>5. Marlo B. Arreza</p>
+                <p>6. Lorna G. Almeda</p>
+                <p>7. John Elven G. Vega</p>
+                <p>8. Romeo Emmanuel D. Azarcon</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Carmen</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Carmen mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Nestor S. Valeroso</p><p>Contact details to be updated</p><p>Municipal Hall, Carmen, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-carmen-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-carmen-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Jane V. Plaza</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Carlos S. Estrada</p>
+                <p>2. Harvey S. Manawatao</p>
+                <p>3. Tanie A. Quillano</p>
+                <p>4. Nilo S. Bigno</p>
+                <p>5. Danny A. Tejol</p>
+                <p>6. Elvie U. Ohao</p>
+                <p>7. Rencio P. Valeroso</p>
+                <p>8. Michael C. Escuyos</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>San Agustin</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Carrascal mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Nicolas O. Alameda</p><p>Contact details to be updated</p><p>Municipal Hall, Carrascal, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-san-agustin-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-san-agustin-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor (to be updated)</p>
+                <p class="eo-district">Sangguniang Bayan Members</p>
+                <p>1. (to be updated)</p>
+                <p>2. (to be updated)</p>
+                <p>3. (to be updated)</p>
+                <p>4. (to be updated)</p>
+                <p>5. (to be updated)</p>
+                <p>6. (to be updated)</p>
+                <p>7. (to be updated)</p>
+                <p>8. (to be updated)</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Carrascal</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Cortes mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Joseph L. Urgel</p><p>Contact details to be updated</p><p>Municipal Hall, Cortes, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-carrascal-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-carrascal-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Vicente H. Pimentel III</p>
+                <p class="eo-district">Sangguniang Bayan Members</p>
+                <p>1. John Angelo T. Arreza</p>
+                <p>2. Jessie James T. Valle</p>
+                <p>3. Romen R. Intano</p>
+                <p>4. Keith Vincent P. Pimentel</p>
+                <p>5. Richard L. Hotchkiss</p>
+                <p>6. Hans Oliver D. Villarosa</p>
+                <p>7. Chito O. Eliot</p>
+                <p>8. Arnel C. Sunico</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Cortes</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Lanuza mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Frederick P. Yu</p><p>Contact details to be updated</p><p>Municipal Hall, Lanuza, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-cortes-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-cortes-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Cherry B. Daraman</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Hazel G. Pasok</p>
+                <p>2. Ronald S. Cubero</p>
+                <p>3. Joven P. Rivera</p>
+                <p>4. Adrian Y. Pono</p>
+                <p>5. Sedfrey G. Cuartero</p>
+                <p>6. Lydia I. Gabisay</p>
+                <p>7. Manuel D. Bagnol</p>
+                <p>8. Mercedette V. Dumagan</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Lanuza</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Madrid mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Geri H. Irizari</p><p>Contact details to be updated</p><p>Municipal Hall, Madrid, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-lanuza-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-lanuza-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Francis Ferdinand G. Layno</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Ignacio L. Serrano, Jr.</p>
+                <p>2. Bryan S. Sychangco</p>
+                <p>3. Eduardo P. Dominguito, Jr.</p>
+                <p>4. Cynthia P. Sajot</p>
+                <p>5. Mariebeth M. Noral</p>
+                <p>6. Cheryl Jean B. Palacio</p>
+                <p>7. Franz Robert S. Lala</p>
+                <p>8. Hernalyn V. Layno</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Madrid</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Marihatag mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Juan Paolo L. Lopez</p><p>Contact details to be updated</p><p>Municipal Hall, Marihatag, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-madrid-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-madrid-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Glenn F. Teves</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Ma Lina Patricia Y. Portillano</p>
+                <p>2. Benjie Lesly Y. Melasa</p>
+                <p>3. April Grace A. Mata</p>
+                <p>4. Maurice Y. Urquia</p>
+                <p>5. Corazon D. Arjona</p>
+                <p>6. Jocille D. Uriarte</p>
+                <p>7. Domingo P. Cortes</p>
+                <p>8. Alvinton V. Magabili</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Marihatag</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="San Miguel mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Benjamin T. Fazon, Jr.</p><p>Contact details to be updated</p><p>Municipal Hall, San Miguel, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-marihatag-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-marihatag-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Charlito R. Lerog</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Rebecca S. Polinar</p>
+                <p>2. Lawrence T. Navarro</p>
+                <p>3. Rene D. Pascual</p>
+                <p>4. Ronald D. Mendoza</p>
+                <p>5. Cherly R. Pacheco</p>
+                <p>6. Gerry S. Campos</p>
+                <p>7. Elpedio L. Lamela, Jr.</p>
+                <p>8. Olympiades F. Gomez, Jr.</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>San Miguel</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Tago mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Michael T. Corilla</p><p>Contact details to be updated</p><p>Municipal Hall, Tago, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-san-miguel-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-san-miguel-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Alfeo G. Perez, Jr.</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Celso B. Bangoy</p>
+                <p>2. Milva C. Yu</p>
+                <p>3. Ruth C. Guinsod</p>
+                <p>4. Rebecca R. Gascon</p>
+                <p>5. Dominador M. Empedrad, Jr.</p>
+                <p>6. Alfcriz Reztan S. Perez</p>
+                <p>7. Fidilreto G. Nazi</p>
+                <p>8. Julieto C. Lobaton, Jr.</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="City government seal" /></div>
+          <div class="eo-office-title"><h2>Tago</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Bislig City mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Val C. Laurente</p><p>Contact details to be updated</p><p>City Hall, Bislig City, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-tago-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-tago-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Ira Minette C. Pimentel</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Romeo D. Momo, Jr.</p>
+                <p>2. Maribel R. Espinoza</p>
+                <p>3. Jessa P. Mate-tecson</p>
+                <p>4. Leo L. Pagaran</p>
+                <p>5. Noel L. Gualvez</p>
+                <p>6. Virginia P. Gomez</p>
+                <p>7. Reynaldo G. Selades</p>
+                <p>8. Levie B. Moreno</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Bislig</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Barobo mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Florencio C. Garay</p><p>Contact details to be updated</p><p>Municipal Hall, Barobo, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-bislig-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-bislig-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Conrad C. Cejoco</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1.  Pedrito R. Sulapas</p>
+                <p>2. Alfredo J. Carmelo</p>
+                <p>3. Bernadeth May A. Balondo</p>
+                <p>4. Jonas A. Cacayan</p>
+                <p>5. Paul E. Vicencio</p>
+                <p>6. Victor B. Alvar, Jr.</p>
+                <p>7. Reynadlo V. Dominguez</p>
+                <p>8. Romeo F. Cacayan</p>
+                <p>9. Winston Y. Sia</p>
+                <p>10. Apolio C. Alvar</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Barobo</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Hinatuan mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Ronito L. Martizano</p><p>Contact details to be updated</p><p>Municipal Hall, Hinatuan, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-barobo-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-barobo-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Allan C. Bernal</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Narciso A. Moresca</p>
+                <p>2. Mary Grace R. Sanchez</p>
+                <p>3. Nancy P. Silva</p>
+                <p>4. Elena P. Conde</p>
+                <p>5. Matias V. Caybot</p>
+                <p>6. Alilo S. Luarez</p>
+                <p>7. Robert Louis D. Cerna</p>
+                <p>8. Maria Sharon B. Balahay</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Hinatuan</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Lianga mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Tito A. Canedo III</p><p>Contact details to be updated</p><p>Municipal Hall, Hinatuan, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-hinatuan-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-hinatuan-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Joan M. Garay </p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Aloha A. Telewik</p>
+                <p>2. Neizyl H. Dinagay</p>
+                <p>3. Edilberto M. Barrios</p>
+                <p>4. Lourdes S. Villaluz</p>
+                <p>5. Danilo A. Cacho</p>
+                <p>6. Monalisa C. Su</p>
+                <p>7. Noel D. Ortiz</p>
+                <p>8. Raineria M. Nazareno</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Lianga</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Lingig mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Amado M. Layno, Jr.</p><p>Contact details to be updated</p><p>Municipal Hall, Lianga, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-lianga-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-lianga-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Francis Ferdinand G. Layno</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Ignacio L. Serrano</p>
+                <p>2. Bryan S. Sychangco</p>
+                <p>3. Eduardo P. Dominguito, Jr.</p>
+                <p>4. Cynthia P. Sajot</p>
+                <p>5. Mariebeth M. Noval</p>
+                <p>6. Cheryl Jean B. Palacio</p>
+                <p>7. Franz Robert S. Lala</p>
+                <p>8. Hernalyn V. Layno</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Lingig</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Tagbina mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Elmer P. Evangelio</p><p>Contact details to be updated</p><p>Municipal Hall, Lingig, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-lingig-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-lingig-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Arnold T. Malaque</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Rechi L. Gaylo</p>
+                <p>2. Keon A. Orillo</p>
+                <p>3. Romie M. Bentayao</p>
+                <p>4. Momar A. Deloso</p>
+                <p>5. Angel L. Canoy</p>
+                <p>6. Paul C. Sereno</p>
+                <p>7. Liberato M. Artiz</p>
+                <p>8. Mary Ailyn Christine M. Paler</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+        </div>
+        <div class="eo-card">
+          <div class="eo-seal"><img src="Logos/960px-Surigao_del_Sur_Flag.png" alt="Municipal government seal" /></div>
+          <div class="eo-office-title"><h2>Tagbina</h2></div>
+          <div class="eo-contact-col"><div class="eo-contact-main"><img src="DILG Seal.png" class="eo-photo" alt="Tagbina mayor placeholder" /><div class="eo-contact-body"><div class="eo-expand-row"><div class="eo-contact-info"><p class="eo-official-name">Mayor Glaiza Jane P. Lanete</p><p>Contact details to be updated</p><p>Municipal Hall, Tagbina, Surigao del Sur</p></div><button class="eo-expand-btn" aria-expanded="false" aria-label="Expand to show more officials" data-expand-target="mayor-tagbina-expand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button></div></div></div><div class="eo-expand-panel" id="mayor-tagbina-expand">
+              <div class="eo-expand-inner">
+                <p>Vice Mayor Janito O. Lumakin</p>
+                <p class="eo-district">Sangguniang Bayan Member:</p>
+                <p>1. Chadelle Austine O. Templanza</p>
+                <p>2. Vanessa V. Polizon </p>
+                <p>3. Jay-ar M. Monecillo</p>
+                <p>4. Uldarico D. Urquiza</p>
+                <p>5. Marichel J. Estacillo</p>
+                <p>6. Maybel P. Palua</p>
+                <p>7. John Flor B. Ramas</p>
+                <p>8. Grethel B. Adlao</p>
+              </div>
+            </div></div>
+          <div class="eo-actions"><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg><span>FACEBOOK</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>WEBSITE</span></a><a href="#" class="eo-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>LGU PROFILE</span></a></div>
+
+      </div><!-- /.eo-officials-list -->
+    </div><!-- /.eo-page -->
+  </main>
+
+  <!-- Add/Edit Official Modal (preserved for admin use) -->
+  <div id="officials-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="officials-modal-title">
+      <button id="officials-modal-close" class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 id="officials-modal-title" class="modal-heading">Add Official</h2>
+      <form id="officials-form" class="modal-form-grid">
+        <div class="modal-field">
+          <label for="official-name">Name</label>
+          <input id="official-name" name="official-name" type="text" required />
+        </div>
+        <div class="modal-field">
+          <label for="official-position">Position</label>
+          <input id="official-position" name="official-position" type="text" required />
+        </div>
+        <div class="modal-field">
+          <label for="official-district">Province / District</label>
+          <input id="official-district" name="official-district" type="text" required />
+        </div>
+        <div class="modal-field">
+          <label for="official-affiliation">Affiliation</label>
+          <input id="official-affiliation" name="official-affiliation" type="text" />
+        </div>
+        <div class="modal-field">
+          <label for="official-term">Term</label>
+          <input id="official-term" name="official-term" type="text" />
+        </div>
+        <div class="modal-field">
+          <label for="official-contact">Contact</label>
+          <input id="official-contact" name="official-contact" type="text" />
+        </div>
+        <div class="modal-field">
+          <label for="official-address">Office Address</label>
+          <input id="official-address" name="official-address" type="text" />
+        </div>
+        <div class="modal-field">
+          <label for="official-url-fb">Facebook URL</label>
+          <input id="official-url-fb" name="official-url-fb" type="url" />
+        </div>
+        <div class="modal-field">
+          <label for="official-url-web">Official Website</label>
+          <input id="official-url-web" name="official-url-web" type="url" />
+        </div>
+        <div class="modal-field">
+          <label for="official-url-profile">Profile Link</label>
+          <input id="official-url-profile" name="official-url-profile" type="url" />
+        </div>
+        <div class="modal-field" style="grid-column: 1 / -1;">
+          <label for="official-note">Additional Notes</label>
+          <textarea id="official-note" name="official-note"></textarea>
+        </div>
+        <div class="modal-actions" style="grid-column: 1 / -1;">
+          <button type="button" id="officials-cancel-btn" class="cancel-btn">Cancel</button>
+          <button type="submit" class="submit-btn">Save Official</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <p class="footer-label">ATTACHED AGENCIES</p>
+      <div class="footer-agencies">
+        <a href="https://napolcom.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/National_Police_Commission_(NAPOLCOM).png" alt="NAPOLCOM logo" /></a>
+        <a href="https://bfp.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/Bureau_of_Fire_Protection.png" alt="BFP logo" /></a>
+        <a href="https://pnp.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/1920px-Philippine_National_Police_seal.svg.webp" alt="PNP logo" /></a>
+        <a href="https://lga.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/3840px-Local_Government_Academy_(LGA).svg.webp" alt="LGA logo" /></a>
+        <a href="https://ppsc.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/Philippine_Public_Safety_College.png" alt="PPSC logo" /></a>
+        <a href="https://bjmp.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/Bureau_of_Jail_Management_and_Penology.png" alt="BJMP logo" /></a>
+        <a href="https://ncmf.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/National_Commission_on_Muslim_Filipinos.png" alt="NCMF logo" /></a>
+        <a href="https://hpg.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/Highway_Patrol_Group.png" alt="HPG logo" /></a>
+        <a href="https://nyc.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/3840px-National_Youth_Commission_Philippines.svg.webp" alt="NYC logo" /></a>
+        <a href="https://pcw.gov.ph/" target="_blank" rel="noreferrer noopener"><img src="Logos/3840px-Philippine_Commission_on_Women_(PCW).svg.webp" alt="PCW logo" /></a>
+      </div>
+    </div>
+    <div class="footer-main">
+      <div class="footer-brand">
+        <img src="Logos/toppng.com-republic-of-the-philippines-logo-1200x1331.png" alt="Republic of the Philippines logo" class="footer-main-logo" />
+        <div>
+          <p class="footer-brand-title">REPUBLIC OF THE PHILIPPINES</p>
+          <p class="footer-brand-subtitle">DILG Surigao del Sur Province</p>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>GOVERNMENT LINKS</h3>
+        <ul>
+          <li><a href="#">Office of the President</a></li>
+          <li><a href="#">Office of the Vice President</a></li>
+          <li><a href="#">Senate of the Philippines</a></li>
+          <li><a href="#">House of Representatives</a></li>
+          <li><a href="#">Supreme Court</a></li>
+          <li><a href="#">Court of Appeals</a></li>
+          <li><a href="#">Sandiganbayan</a></li>
+        </ul>
+      </div>
+      <div class="footer-connect">
+        <h3>Connect with us</h3>
+        <div class="footer-connect-widget">
+          <a href="https://www.facebook.com/DILGsds" target="_blank" rel="noreferrer noopener" class="connect-card" aria-label="Open DILG Surigao del Sur Facebook page (opens in new tab)">
+            <span class="connect-icon" aria-hidden="true">
+              <img src="Logos/2021_Facebook_icon.svg" alt="Facebook icon" />
+            </span>
+            <span class="connect-content">
+              <span class="connect-title">Like us on Facebook</span>
+              <span class="connect-sub">Be updated about DILG</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    /* Expand/collapse accordion for elected officials page */
+    document.querySelectorAll('.eo-expand-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetId = btn.getAttribute('data-expand-target');
+        var panel = document.getElementById(targetId);
+        if (!panel) return;
+        var isOpen = panel.classList.contains('open');
+        panel.classList.toggle('open', !isOpen);
+        btn.classList.toggle('expanded', !isOpen);
+        btn.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+  </script>
+</body>
+</html>
